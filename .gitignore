@@ -1,2 +1,26 @@
-.env
+```
+# Python
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Dependencies
+.venv/
+venv/
+env/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Performance reports
+performance_report.md
+
+# Memory/data files
+data/memory.json
+```

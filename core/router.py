@@ -5,6 +5,8 @@ class Router:
     def __init__(self):
         self.mapping = {
             "math_engine": "engines.math_engine.MathEngine",
+            "logic_engine": "engines.logic_engine.LogicEngine",
+            "unit_engine": "engines.unit_engine.UnitEngine",
             "project_manager": "engines.general_engine.GeneralEngine",
             "device_controller": "engines.general_engine.GeneralEngine"
         }
