@@ -1,10 +1,258 @@
 # Logic Engine - ประมวลผลตรรกะและเหตุผล พร้อมรองรับลำดับขั้นและความซับซ้อน
-from typing import Dict, Any, List
+# Version 2.2: Symbolic Logic System (No eval())
+from typing import Dict, Any, List, Tuple, Optional
 from .base_engine import BaseEngine
+
+
+class SymbolicLogicChecker:
+    """Symbolic logic checker without using eval()."""
+    
+    def __init__(self):
+        self.truth_values = {
+            'true': True, 'false': False,
+            'จริง': True, 'เท็จ': False,
+            't': True, 'f': False,
+            'yes': True, 'no': False,
+            'ใช่': True, 'ไม่ใช่': False,
+        }
+    
+    def parse_expression(self, expr: str) -> Tuple[List[str], List[str]]:
+        """Parse expression into operands and operators."""
+        tokens = []
+        current_token = ""
+        operators = []
+        
+        i = 0
+        while i < len(expr):
+            char = expr[i]
+            
+            # Handle multi-char operators
+            if i + 1 < len(expr):
+                two_char = expr[i:i+2]
+                if two_char in ['<=', '==', '=>', '<>']:
+                    if current_token.strip():
+                        tokens.append(current_token.strip())
+                        current_token = ""
+                    operators.append(two_char)
+                    i += 2
+                    continue
+            
+            if char in '()':
+                if current_token.strip():
+                    tokens.append(current_token.strip())
+                    current_token = ""
+                operators.append(char)
+                i += 1
+                continue
+            
+            if char == ' ':
+                if current_token.strip():
+                    tokens.append(current_token.strip())
+                    current_token = ""
+                i += 1
+                continue
+            
+            current_token += char
+            i += 1
+        
+        if current_token.strip():
+            tokens.append(current_token.strip())
+        
+        return tokens, operators
+    
+    def evaluate_symbolic(self, expr: str) -> Tuple[bool, str]:
+        """Evaluate logical expression symbolically without eval()."""
+        expr_lower = expr.lower()
+        
+        # Replace Thai/English connectors including formal Thai operators
+        replacements = {
+            'และ': ' and ',
+            'หรือ': ' or ',
+            'ไม่': ' not ',
+            'implies': ' -> ',
+            'iff': ' <-> ',
+            # Thai formal operators (v2.2)
+            'หาก': '',      # Remove "หาก" (if) - will be handled by if-then pattern
+            'ย่อม': ' then ',   # Formal "then/yield"
+        }
+        
+        for th, en in replacements.items():
+            expr_lower = expr_lower.replace(th, en)
+        
+        # Parse and evaluate
+        result, explanation = self._evaluate_recursive(expr_lower)
+        return result, explanation
+    
+    def _evaluate_recursive(self, expr: str) -> Tuple[bool, str]:
+        """Recursively evaluate logical expression."""
+        expr = expr.strip()
+        
+        # Remove outer parentheses
+        while expr.startswith('(') and expr.endswith(')'):
+            # Check if these are matching outer parens
+            depth = 0
+            is_outer = True
+            for i, char in enumerate(expr):
+                if char == '(':
+                    depth += 1
+                elif char == ')':
+                    depth -= 1
+                if depth == 0 and i < len(expr) - 1:
+                    is_outer = False
+                    break
+            if is_outer:
+                expr = expr[1:-1].strip()
+            else:
+                break
+        
+        # Check for OR (lowest precedence)
+        or_pos = self._find_operator(expr, ' or ')
+        if or_pos != -1:
+            left = expr[:or_pos].strip()
+            right = expr[or_pos + 4:].strip()
+            left_val, left_exp = self._evaluate_recursive(left)
+            right_val, right_exp = self._evaluate_recursive(right)
+            result = left_val or right_val
+            explanation = f"({left_exp}) OR ({right_exp}) = {result}"
+            return result, explanation
+        
+        # Check for AND
+        and_pos = self._find_operator(expr, ' and ')
+        if and_pos != -1:
+            left = expr[:and_pos].strip()
+            right = expr[and_pos + 5:].strip()
+            left_val, left_exp = self._evaluate_recursive(left)
+            right_val, right_exp = self._evaluate_recursive(right)
+            result = left_val and right_val
+            explanation = f"({left_exp}) AND ({right_exp}) = {result}"
+            return result, explanation
+        
+        # Check for NOT
+        if expr.startswith('not '):
+            inner = expr[4:].strip()
+            inner_val, inner_exp = self._evaluate_recursive(inner)
+            result = not inner_val
+            explanation = f"NOT ({inner_exp}) = {result}"
+            return result, explanation
+        
+        # Check for IF-THEN pattern (handles both "if X then Y" and "X then Y")
+        then_pos = self._find_operator(expr, ' then ')
+        if then_pos != -1:
+            # Check if there's an "if" before "then"
+            if_pos = self._find_operator(expr, ' if ')
+            start_pos = if_pos + 4 if if_pos != -1 and if_pos < then_pos else 0
+            condition = expr[start_pos:then_pos].strip()
+            consequence = expr[then_pos + 5:].strip()
+            
+            # Handle empty condition (when just "X then Y" format)
+            if not condition:
+                # Try to find any word before "then" as condition
+                parts = expr[:then_pos].strip().split()
+                if parts:
+                    condition = parts[-1]  # Take last word before "then"
+            
+            if condition and consequence:
+                try:
+                    cond_val, cond_exp = self._evaluate_recursive(condition)
+                    cons_val, cons_exp = self._evaluate_recursive(consequence)
+                    result = (not cond_val) or cons_val
+                    explanation = f"IF ({cond_exp}) THEN ({cons_exp}) = {result}"
+                    return result, explanation
+                except:
+                    pass  # Fall through to other evaluation methods
+        
+        # Check for IMPLIES (->)
+        impl_pos = self._find_operator(expr, ' -> ')
+        if impl_pos != -1:
+            left = expr[:impl_pos].strip()
+            right = expr[impl_pos + 4:].strip()
+            left_val, left_exp = self._evaluate_recursive(left)
+            right_val, right_exp = self._evaluate_recursive(right)
+            result = (not left_val) or right_val
+            explanation = f"({left_exp}) -> ({right_exp}) = {result}"
+            return result, explanation
+        
+        # Check for IFF (<->)
+        iff_pos = self._find_operator(expr, ' <-> ')
+        if iff_pos != -1:
+            left = expr[:iff_pos].strip()
+            right = expr[iff_pos + 5:].strip()
+            left_val, left_exp = self._evaluate_recursive(left)
+            right_val, right_exp = self._evaluate_recursive(right)
+            result = left_val == right_val
+            explanation = f"({left_exp}) <-> ({right_exp}) = {result}"
+            return result, explanation
+        
+        # Base case: truth value lookup
+        expr_clean = expr.strip().lower()
+        if expr_clean in self.truth_values:
+            result = self.truth_values[expr_clean]
+            return result, f"{expr_clean}={result}"
+        
+        # Try to evaluate as comparison
+        comparison_result = self._evaluate_comparison(expr)
+        if comparison_result is not None:
+            return comparison_result, f"{expr}={comparison_result}"
+        
+        # Unknown expression
+        raise ValueError(f"Cannot evaluate: {expr}")
+    
+    def _find_operator(self, expr: str, op: str) -> int:
+        """Find operator position respecting parentheses."""
+        depth = 0
+        i = 0
+        while i < len(expr):
+            if expr[i] == '(':
+                depth += 1
+            elif expr[i] == ')':
+                depth -= 1
+            elif depth == 0 and expr[i:i+len(op)] == op:
+                return i
+            i += 1
+        return -1
+    
+    def evaluate(self, expr: str) -> Dict[str, Any]:
+        """Public evaluate method returning dict with result and explanation."""
+        try:
+            result, explanation = self.evaluate_symbolic(expr)
+            return {
+                "result": result,
+                "explanation": explanation,
+                "success": True
+            }
+        except Exception as e:
+            return {
+                "result": None,
+                "explanation": str(e),
+                "success": False
+            }
+    
+    def _evaluate_comparison(self, expr: str) -> Optional[bool]:
+        """Evaluate simple comparisons like 'a == b' or 'x > y'."""
+        import re
+        
+        # Pattern for numeric comparisons
+        patterns = [
+            (r'(\d+(?:\.\d+)?)\s*==\s*(\d+(?:\.\d+)?)', lambda a, b: float(a) == float(b)),
+            (r'(\d+(?:\.\d+)?)\s*!=\s*(\d+(?:\.\d+)?)', lambda a, b: float(a) != float(b)),
+            (r'(\d+(?:\.\d+)?)\s*>\s*(\d+(?:\.\d+)?)', lambda a, b: float(a) > float(b)),
+            (r'(\d+(?:\.\d+)?)\s*<\s*(\d+(?:\.\d+)?)', lambda a, b: float(a) < float(b)),
+            (r'(\d+(?:\.\d+)?)\s*>=\s*(\d+(?:\.\d+)?)', lambda a, b: float(a) >= float(b)),
+            (r'(\d+(?:\.\d+)?)\s*<=\s*(\d+(?:\.\d+)?)', lambda a, b: float(a) <= float(b)),
+        ]
+        
+        for pattern, func in patterns:
+            match = re.search(pattern, expr)
+            if match:
+                return func(match.group(1), match.group(2))
+        
+        return None
+
 
 class LogicEngine(BaseEngine):
     def __init__(self):
-        super().__init__(name="logic", version="2.1")
+        super().__init__(name="logic", version="2.2")
+        self.symbolic_checker = SymbolicLogicChecker()
     
     def execute(self, params: Dict[str, Any]) -> str:
         expression = params.get("expression")
@@ -22,42 +270,21 @@ class LogicEngine(BaseEngine):
             return "Error: No logical expression provided."
         
         try:
-            # แปลงคำเชื่อมตรรกะเป็น Python syntax
-            expr = str(expression).lower()
+            # ใช้ Symbolic Logic Checker แทน eval()
+            result, explanation = self.symbolic_checker.evaluate_symbolic(str(expression))
+            result_str = "True" if result else "False"
             
-            # แทนที่คำเชื่อมภาษาไทยและอังกฤษ
-            replacements = {
-                'และ': ' and ',
-                'หรือ': ' or ',
-                'ไม่': ' not ',
-                'ถ้า': ' implies ',
-                'ก็ต่อเมื่อ': ' iff ',
-                'implies': ' <= ',
-                'iff': ' == ',
-                '=>': ' <= ',
-                '<=>': ' == ',
-            }
+            response = (
+                f"🧠 Logic Result: {result_str} (Priority: {priority})\n"
+                f"📝 Reasoning: {explanation}\n"
+                f"🔒 Security: Symbolic evaluation (no eval used)"
+            )
+            return response
             
-            for th, en in replacements.items():
-                expr = expr.replace(th, en)
-            
-            # จัดการ negation จากคำสั่ง
-            if negation:
-                expr = f"not ({expr})"
-            
-            # จัดการ conditionals
-            if conditionals:
-                conditional_expr = self._process_conditionals(expr, conditionals)
-                if conditional_expr:
-                    expr = conditional_expr
-            
-            # ตรวจสอบว่าเป็นประพจน์แบบง่าย (A and B, A or B)
-            if ' and ' in expr or ' or ' in expr or 'not ' in expr:
-                result = self._evaluate_logic(expr)
-                return f"🧠 Logic Result: {result} (Priority: {priority})"
-            
-            return f"🧠 Logical Expression: {expr}\nNote: Complex logic requires symbolic evaluation."
-            
+        except ValueError as e:
+            return f"🧠 Logic Analysis: Cannot determine truth value\n" \
+                   f"📝 Reason: {str(e)}\n" \
+                   f"🔒 Security: Symbolic evaluation (no eval used)"
         except Exception as e:
             return f"Logic Error: {str(e)}"
     
