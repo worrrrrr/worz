@@ -1,0 +1,18 @@
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Intent Captured: {'tool': 'math_engine', 'action': 'calculate', 'params': {'equation': '5+5'}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Intent Captured: {'tool': 'math_engine', 'action': 'addition', 'params': {'num1': 5, 'num2': 5}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Intent Captured: {'tool': 'math_engine', 'action': 'calculate', 'params': {'expression': '5+5'}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Intent Captured: {'tool': 'math_engine', 'action': 'calculate', 'params': {'expression': '5+5'}}
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 404 Not Found"
+INFO:root:Intent Captured: {'tool': 'error', 'params': {'message': "model 'qwen3:0.8b' not found (status code: 404)"}}
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 404 Not Found"
+INFO:root:Intent Captured: {'tool': 'error', 'params': {'message': "model 'qwen3:0.8b' not found (status code: 404)"}}
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+INFO:root:Intent Captured: {'tool': 'math_engine', 'params': {'expression': '5+5'}}
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+INFO:root:Intent Captured: {'tool': 'math_engine', 'params': {'expression': '9.8 - 9.11'}}
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+INFO:root:Intent Captured: {'tool': 'math_engine', 'params': {'expression': '3^x = x^9'}}
