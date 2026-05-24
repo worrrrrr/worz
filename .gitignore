@@ -4,23 +4,22 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-
-# Dependencies
-.venv/
-venv/
+.Python
 env/
+venv/
+.venv/
+.ENV
+.python-version
 
 # Logs
 *.log
 
-# Environment
+# Local configuration
 .env
 .env.local
 *.env.*
+!.env.example
 
-# Performance reports
-performance_report.md
-
-# Memory/data files
+# Data files
 data/memory.json
 ```
