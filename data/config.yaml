@@ -1,0 +1,45 @@
+# WORZ SOVEREIGN CORE Configuration
+# Symbolic-only Mode (No LLM)
+
+system:
+  name: "WORZ SOVEREIGN CORE"
+  version: "3.0-symbolic"
+  mode: "symbolic_only"  # symbolic_only, hybrid, llm_only
+
+engines:
+  math:
+    enabled: true
+    precision: 10
+    use_sympy: true
+  
+  logic:
+    enabled: true
+    paradox_detection: true
+  
+  unit:
+    enabled: true
+    default_system: "metric"  # metric, imperial
+  
+  general:
+    enabled: true
+
+parser:
+  language_support: ["th", "en"]
+  negation_detection: true
+  order_detection: true
+  priority_detection: true
+
+memory:
+  max_history: 100
+  persist: false
+  save_results: true
+
+security:
+  guardrails_enabled: true
+  risk_threshold: 3
+  block_adversarial: true
+
+logging:
+  level: "INFO"
+  save_to_file: true
+  log_dir: "data/logs"

@@ -1,0 +1,11 @@
+{
+  "user_id": "master_architect",
+  "philosophy": "เน้นความเรียบง่าย ประสิทธิภาพสูงสุด และผลลัพธ์ที่ยั่งยืนเหนือกำไรระยะสั้น",
+  "preferences": {
+    "units": "metric",
+    "tone": "professional",
+    "verbose": false
+  },
+  "goals": [],
+  "created_at": "2026-05-24T19:08:44.776529"
+}

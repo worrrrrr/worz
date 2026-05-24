@@ -1,0 +1,451 @@
+{
+  "nodes": [
+    {
+      "node_id": "formula_0",
+      "name": "area_circle",
+      "category": "formula",
+      "data": {
+        "name": "area_circle",
+        "formula": "π * r²",
+        "category": "geometry",
+        "description": "พื้นที่วงกลม"
+      },
+      "created_at": "2026-05-24T20:31:10.681484",
+      "connections": [
+        "formula_9"
+      ]
+    },
+    {
+      "node_id": "formula_1",
+      "name": "circumference_circle",
+      "category": "formula",
+      "data": {
+        "name": "circumference_circle",
+        "formula": "2 * π * r",
+        "category": "geometry",
+        "description": "เส้นรอบวงวงกลม"
+      },
+      "created_at": "2026-05-24T20:31:10.681496",
+      "connections": [
+        "formula_9"
+      ]
+    },
+    {
+      "node_id": "formula_2",
+      "name": "area_triangle",
+      "category": "formula",
+      "data": {
+        "name": "area_triangle",
+        "formula": "0.5 * base * height",
+        "category": "geometry",
+        "description": "พื้นที่สามเหลี่ยม"
+      },
+      "created_at": "2026-05-24T20:31:10.681499",
+      "connections": []
+    },
+    {
+      "node_id": "formula_3",
+      "name": "area_rectangle",
+      "category": "formula",
+      "data": {
+        "name": "area_rectangle",
+        "formula": "length * width",
+        "category": "geometry",
+        "description": "พื้นที่สี่เหลี่ยมผืนผ้า"
+      },
+      "created_at": "2026-05-24T20:31:10.681502",
+      "connections": []
+    },
+    {
+      "node_id": "formula_4",
+      "name": "area_square",
+      "category": "formula",
+      "data": {
+        "name": "area_square",
+        "formula": "side²",
+        "category": "geometry",
+        "description": "พื้นที่สี่เหลี่ยมจัตุรัส"
+      },
+      "created_at": "2026-05-24T20:31:10.681504",
+      "connections": []
+    },
+    {
+      "node_id": "formula_5",
+      "name": "volume_sphere",
+      "category": "formula",
+      "data": {
+        "name": "volume_sphere",
+        "formula": "(4/3) * π * r³",
+        "category": "geometry",
+        "description": "ปริมาตรทรงกลม"
+      },
+      "created_at": "2026-05-24T20:31:10.681520",
+      "connections": [
+        "formula_0"
+      ]
+    },
+    {
+      "node_id": "formula_6",
+      "name": "volume_cube",
+      "category": "formula",
+      "data": {
+        "name": "volume_cube",
+        "formula": "side³",
+        "category": "geometry",
+        "description": "ปริมาตรลูกบาศก์"
+      },
+      "created_at": "2026-05-24T20:31:10.681525",
+      "connections": []
+    },
+    {
+      "node_id": "formula_7",
+      "name": "volume_cylinder",
+      "category": "formula",
+      "data": {
+        "name": "volume_cylinder",
+        "formula": "π * r² * h",
+        "category": "geometry",
+        "description": "ปริมาตรทรงกระบอก"
+      },
+      "created_at": "2026-05-24T20:31:10.681530",
+      "connections": [
+        "formula_0"
+      ]
+    },
+    {
+      "node_id": "formula_8",
+      "name": "pythagorean",
+      "category": "formula",
+      "data": {
+        "name": "pythagorean",
+        "formula": "a² + b² = c²",
+        "category": "geometry",
+        "description": "ทฤษฎีบทพีทาโกรัส"
+      },
+      "created_at": "2026-05-24T20:31:10.681532",
+      "connections": []
+    },
+    {
+      "node_id": "formula_9",
+      "name": "quadratic_formula",
+      "category": "formula",
+      "data": {
+        "name": "quadratic_formula",
+        "formula": "(-b ± √(b²-4ac)) / 2a",
+        "category": "algebra",
+        "description": "สูตรสมการกำลังสอง"
+      },
+      "created_at": "2026-05-24T20:31:10.681534",
+      "connections": []
+    },
+    {
+      "node_id": "law_0",
+      "name": "force",
+      "category": "law",
+      "data": {
+        "name": "force",
+        "law": "F = m * a",
+        "category": "mechanics",
+        "description": "กฎการเคลื่อนที่ของนิวตัน"
+      },
+      "created_at": "2026-05-24T20:31:10.681538",
+      "connections": [
+        "formula_9"
+      ]
+    },
+    {
+      "node_id": "law_1",
+      "name": "velocity",
+      "category": "law",
+      "data": {
+        "name": "velocity",
+        "law": "v = d / t",
+        "category": "mechanics",
+        "description": "ความเร็ว"
+      },
+      "created_at": "2026-05-24T20:31:10.681541",
+      "connections": [
+        "formula_9"
+      ]
+    },
+    {
+      "node_id": "law_2",
+      "name": "acceleration",
+      "category": "law",
+      "data": {
+        "name": "acceleration",
+        "law": "a = (v_f - v_i) / t",
+        "category": "mechanics",
+        "description": "ความเร่ง"
+      },
+      "created_at": "2026-05-24T20:31:10.681543",
+      "connections": []
+    },
+    {
+      "node_id": "law_3",
+      "name": "kinetic_energy",
+      "category": "law",
+      "data": {
+        "name": "kinetic_energy",
+        "law": "KE = 0.5 * m * v²",
+        "category": "energy",
+        "description": "พลังงานจลน์"
+      },
+      "created_at": "2026-05-24T20:31:10.681545",
+      "connections": [
+        "formula_9"
+      ]
+    },
+    {
+      "node_id": "law_4",
+      "name": "potential_energy",
+      "category": "law",
+      "data": {
+        "name": "potential_energy",
+        "law": "PE = m * g * h",
+        "category": "energy",
+        "description": "พลังงานศักย์"
+      },
+      "created_at": "2026-05-24T20:31:10.681550",
+      "connections": [
+        "formula_9"
+      ]
+    },
+    {
+      "node_id": "law_5",
+      "name": "work",
+      "category": "law",
+      "data": {
+        "name": "work",
+        "law": "W = F * d * cos(θ)",
+        "category": "energy",
+        "description": "งาน"
+      },
+      "created_at": "2026-05-24T20:31:10.681552",
+      "connections": []
+    },
+    {
+      "node_id": "law_6",
+      "name": "power",
+      "category": "law",
+      "data": {
+        "name": "power",
+        "law": "P = W / t",
+        "category": "energy",
+        "description": "กำลัง"
+      },
+      "created_at": "2026-05-24T20:31:10.681554",
+      "connections": []
+    },
+    {
+      "node_id": "law_7",
+      "name": "ohm_law",
+      "category": "law",
+      "data": {
+        "name": "ohm_law",
+        "law": "V = I * R",
+        "category": "electricity",
+        "description": "กฎของโอห์ม"
+      },
+      "created_at": "2026-05-24T20:31:10.681558",
+      "connections": []
+    },
+    {
+      "node_id": "law_8",
+      "name": "electric_power",
+      "category": "law",
+      "data": {
+        "name": "electric_power",
+        "law": "P = V * I",
+        "category": "electricity",
+        "description": "กำลังไฟฟ้า"
+      },
+      "created_at": "2026-05-24T20:31:10.681560",
+      "connections": []
+    },
+    {
+      "node_id": "law_9",
+      "name": "heat_transfer",
+      "category": "law",
+      "data": {
+        "name": "heat_transfer",
+        "law": "Q = m * c * ΔT",
+        "category": "thermodynamics",
+        "description": "การถ่ายโอนความร้อน"
+      },
+      "created_at": "2026-05-24T20:31:10.681562",
+      "connections": []
+    },
+    {
+      "node_id": "law_10",
+      "name": "ideal_gas",
+      "category": "law",
+      "data": {
+        "name": "ideal_gas",
+        "law": "PV = nRT",
+        "category": "thermodynamics",
+        "description": "กฎแก๊สอุดมคติ"
+      },
+      "created_at": "2026-05-24T20:31:10.681564",
+      "connections": []
+    },
+    {
+      "node_id": "rule_0",
+      "name": "modus_ponens",
+      "category": "rule",
+      "data": {
+        "name": "modus_ponens",
+        "rule": "[(A → B) ∧ A] → B",
+        "description": "โมดัส โพเนนส์"
+      },
+      "created_at": "2026-05-24T20:31:10.681568",
+      "connections": [
+        "law_0",
+        "law_1"
+      ]
+    },
+    {
+      "node_id": "rule_1",
+      "name": "modus_tollens",
+      "category": "rule",
+      "data": {
+        "name": "modus_tollens",
+        "rule": "[(A → B) ∧ ¬B] → ¬A",
+        "description": "โมดัส ทอลเลนส์"
+      },
+      "created_at": "2026-05-24T20:31:10.681571",
+      "connections": []
+    },
+    {
+      "node_id": "rule_2",
+      "name": "hypothetical_syllogism",
+      "category": "rule",
+      "data": {
+        "name": "hypothetical_syllogism",
+        "rule": "[(A → B) ∧ (B → C)] → (A → C)",
+        "description": "ตรรกะแบบสมมติ"
+      },
+      "created_at": "2026-05-24T20:31:10.681573",
+      "connections": []
+    },
+    {
+      "node_id": "rule_3",
+      "name": "disjunctive_syllogism",
+      "category": "rule",
+      "data": {
+        "name": "disjunctive_syllogism",
+        "rule": "[(A ∨ B) ∧ ¬A] → B",
+        "description": "ตรรกะแบบเลือก"
+      },
+      "created_at": "2026-05-24T20:31:10.681575",
+      "connections": []
+    },
+    {
+      "node_id": "rule_4",
+      "name": "demorgan_1",
+      "category": "rule",
+      "data": {
+        "name": "demorgan_1",
+        "rule": "¬(A ∧ B) ≡ ¬A ∨ ¬B",
+        "description": "กฎเดอมอร์แกน 1"
+      },
+      "created_at": "2026-05-24T20:31:10.681577",
+      "connections": []
+    },
+    {
+      "node_id": "rule_5",
+      "name": "demorgan_2",
+      "category": "rule",
+      "data": {
+        "name": "demorgan_2",
+        "rule": "¬(A ∨ B) ≡ ¬A ∧ ¬B",
+        "description": "กฎเดอมอร์แกน 2"
+      },
+      "created_at": "2026-05-24T20:31:10.681579",
+      "connections": []
+    }
+  ],
+  "relationships": [
+    {
+      "source_id": "formula_0",
+      "target_id": "formula_9",
+      "relation_type": "depends_on",
+      "weight": 0.8,
+      "metadata": {},
+      "created_at": "2026-05-24T20:31:10.682494"
+    },
+    {
+      "source_id": "formula_1",
+      "target_id": "formula_9",
+      "relation_type": "depends_on",
+      "weight": 0.8,
+      "metadata": {},
+      "created_at": "2026-05-24T20:31:10.682502"
+    },
+    {
+      "source_id": "formula_5",
+      "target_id": "formula_0",
+      "relation_type": "depends_on",
+      "weight": 0.8,
+      "metadata": {},
+      "created_at": "2026-05-24T20:31:10.682507"
+    },
+    {
+      "source_id": "formula_7",
+      "target_id": "formula_0",
+      "relation_type": "depends_on",
+      "weight": 0.8,
+      "metadata": {},
+      "created_at": "2026-05-24T20:31:10.682509"
+    },
+    {
+      "source_id": "law_0",
+      "target_id": "formula_9",
+      "relation_type": "uses",
+      "weight": 0.8,
+      "metadata": {},
+      "created_at": "2026-05-24T20:31:10.682512"
+    },
+    {
+      "source_id": "law_1",
+      "target_id": "formula_9",
+      "relation_type": "uses",
+      "weight": 0.8,
+      "metadata": {},
+      "created_at": "2026-05-24T20:31:10.682515"
+    },
+    {
+      "source_id": "law_3",
+      "target_id": "formula_9",
+      "relation_type": "uses",
+      "weight": 0.8,
+      "metadata": {},
+      "created_at": "2026-05-24T20:31:10.682517"
+    },
+    {
+      "source_id": "law_4",
+      "target_id": "formula_9",
+      "relation_type": "uses",
+      "weight": 0.8,
+      "metadata": {},
+      "created_at": "2026-05-24T20:31:10.682520"
+    },
+    {
+      "source_id": "rule_0",
+      "target_id": "law_0",
+      "relation_type": "prerequisite",
+      "weight": 0.8,
+      "metadata": {},
+      "created_at": "2026-05-24T20:31:10.682522"
+    },
+    {
+      "source_id": "rule_0",
+      "target_id": "law_1",
+      "relation_type": "prerequisite",
+      "weight": 0.8,
+      "metadata": {},
+      "created_at": "2026-05-24T20:31:10.682525"
+    }
+  ],
+  "exported_at": "2026-05-24T20:31:10.693176"
+}

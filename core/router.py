@@ -14,6 +14,10 @@ class Router:
             "math_engine": "engines.math_engine.MathEngine",
             "logic_engine": "engines.logic_engine.LogicEngine",
             "unit_engine": "engines.unit_engine.UnitEngine",
+            "general_engine": "engines.general_engine.GeneralEngine",
+            "statistics_engine": "engines.statistics_engine.StatisticsEngine",
+            "chemistry_engine": "engines.chemistry_engine.ChemistryEngine",
+            "finance_engine": "engines.finance_engine.FinanceEngine",
             "project_manager": "engines.general_engine.GeneralEngine",
             "device_controller": "engines.general_engine.GeneralEngine",
         }

@@ -1,18 +1,21 @@
 """
 Orchestrator - Core coordination module for WORZ SOVEREIGN CORE
 Routes requests to appropriate engines and manages context.
-Version 2.2: Enhanced reasoning trace and ANSI color support
+Version 3.0: Symbolic-only Mode (No LLM Dependency) + Philosophy Core
 """
 import re
+import json
+import os
 from typing import Dict, Any, Optional, List
+from datetime import datetime
 
-from core.parser import IntentParser
+from core.intent_parser import RuleBasedIntentParser as IntentParser
 from core.router import Router
 from core.memory import Memory
 from core.knowledge_base import get_knowledge_base
+from core.goal_manager import GoalManager
 
 
-# ANSI Color codes for terminal output
 class Colors:
     """ANSI color codes for terminal output."""
     RESET = "\033[0m"
@@ -27,21 +30,127 @@ class Colors:
     GRAY = "\033[90m"
 
 
-class Orchestrator:
-    """Main orchestrator that coordinates parsing, routing, and memory."""
+class SovereignOrchestrator:
+    """Advanced orchestrator with Philosophy Core and Self-Reflection (No LLM)."""
     
-    def __init__(self, api_key: str = "default_key"):
-        """Initialize the Orchestrator with required components.
+    def __init__(self, user_id: str = "default_user"):
+        """Initialize the Sovereign Orchestrator.
         
         Args:
-            api_key: API key for LLM services (default: "default_key" for testing)
+            user_id: Unique user identifier for personalized experience
         """
-        self.parser = IntentParser(api_key)
+        self.user_id = user_id
+        self.parser = IntentParser()  # Symbolic parser only
         self.router = Router()
         self.memory = Memory()
         self.kb = get_knowledge_base()
+        self.goal_manager = GoalManager(user_id=user_id)  # Strategic Goal Alignment
+        self.preferences_path = f"data/preferences_{user_id}.json"
+        self.feedback_log_path = f"data/feedback_{user_id}.json"
+        
+        # Load or initialize preferences
+        self.preferences = self._load_preferences()
+        
+        # Sync philosophy to Goal Manager
+        if self.preferences.get('philosophy'):
+            self.goal_manager.philosophy = self.preferences['philosophy']
+        
+        # Feedback storage
+        self.feedback_history = self._load_feedback()
+        
+        # Reasoning trace
         self.reasoning_steps: List[Dict[str, Any]] = []
         self.verbose_mode = False
+    
+    def _load_preferences(self) -> Dict[str, Any]:
+        """Load user preferences from file or create new."""
+        if os.path.exists(self.preferences_path):
+            with open(self.preferences_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        
+        # Default preferences
+        return {
+            "user_id": self.user_id,
+            "philosophy": "",
+            "preferences": {
+                "units": "metric",
+                "tone": "professional",
+                "verbose": False
+            },
+            "goals": [],
+            "created_at": datetime.now().isoformat()
+        }
+    
+    def _save_preferences(self):
+        """Save preferences to file."""
+        os.makedirs("data", exist_ok=True)
+        with open(self.preferences_path, 'w', encoding='utf-8') as f:
+            json.dump(self.preferences, f, ensure_ascii=False, indent=2)
+    
+    def _load_feedback(self) -> List[Dict[str, Any]]:
+        """Load feedback history from file."""
+        if os.path.exists(self.feedback_log_path):
+            with open(self.feedback_log_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        return []
+    
+    def _save_feedback(self):
+        """Save feedback history to file."""
+        os.makedirs("data", exist_ok=True)
+        with open(self.feedback_log_path, 'w', encoding='utf-8') as f:
+            json.dump(self.feedback_history, f, ensure_ascii=False, indent=2)
+    
+    def save_preference(self, key: str, value: Any):
+        """Save a user preference or philosophy.
+        
+        Args:
+            key: Preference key (e.g., 'philosophy', 'units', 'tone')
+            value: Value to store
+        """
+        if key == 'philosophy':
+            self.preferences['philosophy'] = value
+        elif key in self.preferences.get('preferences', {}):
+            self.preferences['preferences'][key] = value
+        else:
+            self.preferences['preferences'][key] = value
+        
+        self._save_preferences()
+        print(f"{Colors.GREEN}✅{Colors.RESET} Preference saved: {key}")
+    
+    def set_goal(self, goal: str):
+        """Add a strategic goal for the user.
+        
+        Args:
+            goal: Goal description
+        """
+        if 'goals' not in self.preferences:
+            self.preferences['goals'] = []
+        
+        self.preferences['goals'].append({
+            "description": goal,
+            "created_at": datetime.now().isoformat(),
+            "status": "active"
+        })
+        self._save_preferences()
+        print(f"{Colors.GREEN}🎯{Colors.RESET} Goal added: {goal}")
+    
+    def submit_feedback(self, response_id: str, rating: int, comment: str = ""):
+        """Submit feedback for a response (1-5 scale).
+        
+        Args:
+            response_id: ID of the response
+            rating: Rating 1-5
+            comment: Optional comment
+        """
+        feedback_entry = {
+            "response_id": response_id,
+            "rating": rating,
+            "comment": comment,
+            "timestamp": datetime.now().isoformat()
+        }
+        self.feedback_history.append(feedback_entry)
+        self._save_feedback()
+        print(f"{Colors.GREEN}📝{Colors.RESET} Feedback recorded: {rating}/5")
     
     def get_reasoning_steps(self) -> List[Dict[str, Any]]:
         """Get all recorded reasoning steps.
