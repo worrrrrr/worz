@@ -179,16 +179,24 @@ class RuleBasedIntentParser:
         """แยกคำสั่งหลายขั้นตอนออกจากกัน"""
         steps = []
         
-        # แยกด้วยคำเชื่อม
+        # ตรวจสอบคำเชื่อมก่อน - แต่ต้องไม่ใช่ comma ในรายการตัวเลข
         for conjunction in self.conjunction_keywords:
             if conjunction in text:
+                # กรณีพิเศษ: ถ้ามี comma และตามด้วยตัวเลข ให้ไม่แยก (เป็นรายการตัวเลข)
+                if conjunction == ',' or conjunction == 'และ':
+                    # เช็คว่าเป็นรูปแบบ "ตัวเลข, ตัวเลข, ..." หรือไม่
+                    import re
+                    number_list_pattern = r'^[\d\s,\.\-]+$'
+                    if re.match(number_list_pattern, text.replace(' ', '')):
+                        return [text]  # ไม่แยก เป็นรายการตัวเลข
+                
                 parts = text.split(conjunction)
                 steps.extend([p.strip() for p in parts if p.strip()])
                 return steps
         
-        # แยกด้วยเครื่องหมายวรรคตอน
-        if ',' in text or ';' in text or '.' in text:
-            parts = re.split(r'[,.]', text)
+        # แยกด้วยเครื่องหมายวรรคตอน (แต่ไม่ใช่ comma ในรายการตัวเลข)
+        if ';' in text or '.' in text:
+            parts = re.split(r'[;.]', text)
             steps.extend([p.strip() for p in parts if p.strip()])
             return steps
         

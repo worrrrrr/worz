@@ -1,0 +1,59 @@
+{
+  "formulas": [
+    {"name": "area_circle", "formula": "π * r²", "category": "geometry", "description": "พื้นที่วงกลม"},
+    {"name": "circumference_circle", "formula": "2 * π * r", "category": "geometry", "description": "เส้นรอบวงวงกลม"},
+    {"name": "area_triangle", "formula": "0.5 * base * height", "category": "geometry", "description": "พื้นที่สามเหลี่ยม"},
+    {"name": "area_rectangle", "formula": "length * width", "category": "geometry", "description": "พื้นที่สี่เหลี่ยมผืนผ้า"},
+    {"name": "area_square", "formula": "side²", "category": "geometry", "description": "พื้นที่สี่เหลี่ยมจัตุรัส"},
+    {"name": "volume_sphere", "formula": "(4/3) * π * r³", "category": "geometry", "description": "ปริมาตรทรงกลม"},
+    {"name": "volume_cube", "formula": "side³", "category": "geometry", "description": "ปริมาตรลูกบาศก์"},
+    {"name": "volume_cylinder", "formula": "π * r² * h", "category": "geometry", "description": "ปริมาตรทรงกระบอก"},
+    {"name": "pythagorean", "formula": "a² + b² = c²", "category": "geometry", "description": "ทฤษฎีบทพีทาโกรัส"},
+    {"name": "quadratic_formula", "formula": "(-b ± √(b²-4ac)) / 2a", "category": "algebra", "description": "สูตรสมการกำลังสอง"}
+  ],
+  "physics_laws": [
+    {"name": "force", "law": "F = m * a", "category": "mechanics", "description": "กฎการเคลื่อนที่ของนิวตัน"},
+    {"name": "velocity", "law": "v = d / t", "category": "mechanics", "description": "ความเร็ว"},
+    {"name": "acceleration", "law": "a = (v_f - v_i) / t", "category": "mechanics", "description": "ความเร่ง"},
+    {"name": "kinetic_energy", "law": "KE = 0.5 * m * v²", "category": "energy", "description": "พลังงานจลน์"},
+    {"name": "potential_energy", "law": "PE = m * g * h", "category": "energy", "description": "พลังงานศักย์"},
+    {"name": "work", "law": "W = F * d * cos(θ)", "category": "energy", "description": "งาน"},
+    {"name": "power", "law": "P = W / t", "category": "energy", "description": "กำลัง"},
+    {"name": "ohm_law", "law": "V = I * R", "category": "electricity", "description": "กฎของโอห์ม"},
+    {"name": "electric_power", "law": "P = V * I", "category": "electricity", "description": "กำลังไฟฟ้า"},
+    {"name": "heat_transfer", "law": "Q = m * c * ΔT", "category": "thermodynamics", "description": "การถ่ายโอนความร้อน"},
+    {"name": "ideal_gas", "law": "PV = nRT", "category": "thermodynamics", "description": "กฎแก๊สอุดมคติ"}
+  ],
+  "logic_rules": [
+    {"name": "modus_ponens", "rule": "[(A → B) ∧ A] → B", "description": "โมดัส โพเนนส์"},
+    {"name": "modus_tollens", "rule": "[(A → B) ∧ ¬B] → ¬A", "description": "โมดัส ทอลเลนส์"},
+    {"name": "hypothetical_syllogism", "rule": "[(A → B) ∧ (B → C)] → (A → C)", "description": "ตรรกะแบบสมมติ"},
+    {"name": "disjunctive_syllogism", "rule": "[(A ∨ B) ∧ ¬A] → B", "description": "ตรรกะแบบเลือก"},
+    {"name": "demorgan_1", "rule": "¬(A ∧ B) ≡ ¬A ∨ ¬B", "description": "กฎเดอมอร์แกน 1"},
+    {"name": "demorgan_2", "rule": "¬(A ∨ B) ≡ ¬A ∧ ¬B", "description": "กฎเดอมอร์แกน 2"}
+  ],
+  "procedures": [
+    {
+      "task": "solve_equation",
+      "steps": [
+        "1. Identify the type of equation",
+        "2. Simplify both sides",
+        "3. Move all terms to one side",
+        "4. Factor or use formula",
+        "5. Solve for variable",
+        "6. Check solution"
+      ]
+    },
+    {
+      "task": "unit_conversion",
+      "steps": [
+        "1. Identify starting unit",
+        "2. Identify target unit",
+        "3. Find conversion factor",
+        "4. Set up conversion equation",
+        "5. Calculate result",
+        "6. Verify units cancel correctly"
+      ]
+    }
+  ]
+}
